@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const config = require("./config/config");
 const cors=require("./middleware/middleware");
 const port=process.env.PORT||config.serverPort;
-const userRoute=require("./router/user");
+const userRoute=require("./routes/user");
 // router function 
 const userM=require("./models/user");
 const User=require("./controller/user");
@@ -35,7 +35,10 @@ app.get("/",(req,res)=>{
    res.send(` To access api use this route->localhost:${port}/api/`);
 });
 
-app.use("/api/user",userRoute);
+app.post("/register",User.signUp);
+app.post("/login",User.login)
+
+app.use("/api",userRoute);
 
 
 app.listen(3000,()=>{
