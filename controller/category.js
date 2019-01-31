@@ -5,7 +5,7 @@ var config = require('../config/config');
 exports.createCategory=(req,res)=>{
     
      const cate_name=req.body.name;
-     Category.findOnd({name:cate_name}).exec((err,category)=>{
+     Category.findOne({name:cate_name}).exec((err,category)=>{
      	  if(err){
      	  	res.status(502).json({success:false,massage:"Internal Server errror"})
      	  }
@@ -16,10 +16,10 @@ exports.createCategory=(req,res)=>{
      	  	 var newCategory=new Category({
      	  	 	 name:cate_name
      	  	 });
-     	  	 newCategory.save().exec((err,category)=>{
-     	  	 	  if(err){res.status(300).json({success:false,message:"Internal server error"})}
-     	  	 	  return res.status(200).json({success:true,category:category});	
-     	  	 })
+     	  	 newCategory.save((err,category)=>{
+                  if(err){res.status(300).json({success:false,message:"Internal server error"})}
+                  return res.status(200).json({success:true,category:category});    
+             })
      	  }
 	 });
 }

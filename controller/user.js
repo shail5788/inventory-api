@@ -12,6 +12,7 @@ exports.signUp=(req,res,next)=>{
         const username=req.body.username;
         const email=req.body.email;
         const password=req.body.password;    
+
         if (!firstname || !lastname || !email || !username || !password) {
           return res.status(403).json({ success: false, message: 'Posted data is not correct or incomplete.'});
         }
@@ -107,7 +108,7 @@ exports.getAllUsers=(req,res)=>{
 }
 exports.getUser=(req,res)=>{
       var id=req.params.id;
-      console.log(id);
+      
       User.find({_id:id}).exec((err,users)=>{
          if(err){
             return res.status(401).json({success:false,message:"Inter server error!"})

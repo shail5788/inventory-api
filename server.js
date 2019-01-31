@@ -8,7 +8,10 @@ const jwt = require("jsonwebtoken");
 const config = require("./config/config");
 const cors=require("./middleware/middleware");
 const port=process.env.PORT||config.serverPort;
+
 const userRoute=require("./routes/user");
+const categoryRoute=require("./routes/category");
+const productRoute=require("./routes/product");
 // router function 
 const userM=require("./models/user");
 const User=require("./controller/user");
@@ -39,6 +42,8 @@ app.post("/register",User.signUp);
 app.post("/login",User.login)
 
 app.use("/api",userRoute);
+app.use("/api",categoryRoute);
+app.use("/api",productRoute);
 
 
 app.listen(3000,()=>{
