@@ -12,6 +12,7 @@ const port=process.env.PORT||config.serverPort;
 const userRoute=require("./routes/user");
 const categoryRoute=require("./routes/category");
 const productRoute=require("./routes/product");
+const stockRoute=require("./routes/stocks");
 // router function 
 const userM=require("./models/user");
 const User=require("./controller/user");
@@ -44,7 +45,7 @@ app.post("/login",User.login)
 app.use("/api",userRoute);
 app.use("/api",categoryRoute);
 app.use("/api",productRoute);
-
+app.use("/api",stockRoute);
 
 app.listen(3000,()=>{
 	console.log(`server is running on port -${port}`);

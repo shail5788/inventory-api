@@ -7,9 +7,9 @@ const stockSchema=new Schema({
       productID:{type: mongoose.Schema.Types.ObjectId, ref: "products"},
 	  qty:{type:Number,default:0},
 	  remainingQty:{type:Number,default:0},
-	
+	  createdAt:{type:Date,default:Date.now()}
 
 });
 
-module.exports =mongoose.model("products",productSchema,"Products");
+module.exports =mongoose.model("stocks",stockSchema,"Stocks");
 
