@@ -39,6 +39,7 @@ exports.createStock=(req,res)=>{
                                    
                                   var newInventory=Inventory({
                                       productID:productID,
+                                      barcodeno:curStock.productID.barcodeno,
                                       qty:qty,
                                       remQty:qty,
                                    })

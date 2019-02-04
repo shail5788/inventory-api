@@ -14,7 +14,7 @@ router.route("/product-inventory")
 	  .get(inventory.getAllProductInventory)
 	  
 router.route("/product-inventory/:id")
-	  .get(inventory.getAllProductInventory)
+	  .get(inventory.getProductInventrory)
 	  .post((req,res)=>{
 	  	res.status(200).json({message:"Updated Inventory"})
 	  })

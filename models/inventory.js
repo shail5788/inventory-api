@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const inventorySchema=new Schema({                              
       
       productID:{type: mongoose.Schema.Types.ObjectId, ref: "products"},
+      barcodeno:{type:String},
 	  qty:{type:Number,default:0},
 	  remQty:{type:Number,default:0},
 	  createdAt:{type:Date,default:Date.now()}

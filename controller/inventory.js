@@ -12,3 +12,12 @@ exports.getAllProductInventory=(req,res)=>{
 	  		   	  res.status(200).json({success:true,total:products.length,products:products});
 	  		   });
 }
+exports.getProductInventrory=(req,res)=>{
+        barcode=req.params.id;  
+	    Inventory.findOne({barcodeno:barcode})
+	    		 .populate("productID")
+	             .exec((err,product)=>{
+                 if(err){res.status(400).json({success:true,message:"Internal Server Error"})}
+                 res.status(200).json({success:true,product:product}) 	
+	    })       
+}
