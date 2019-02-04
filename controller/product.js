@@ -5,6 +5,7 @@ exports.createProducts=(req,res)=>{
 
 	   const productName=req.body.productName;
 	   const brand=req.body.brand;
+	   const barcodeno=req.body.barcodeno;
 	   const category=req.body.category;
 	   const unitPrice=req.body.unitPrice;
 	   const size=req.body.size;
@@ -14,6 +15,7 @@ exports.createProducts=(req,res)=>{
 	   	    var newProduct=new Product({
 	   	    	  productName:productName,
 	   	    	  brand:brand,
+	   	    	  barcodeno:barcodeno,
 	   	    	  category:category,
 	   	    	  unit_price:unitPrice,
 	   	    	  size:size

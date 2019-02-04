@@ -108,7 +108,6 @@ exports.getAllUsers=(req,res)=>{
 }
 exports.getUser=(req,res)=>{
       var id=req.params.id;
-      
       User.find({_id:id}).exec((err,users)=>{
          if(err){
             return res.status(401).json({success:false,message:"Inter server error!"})

@@ -13,6 +13,7 @@ const userRoute=require("./routes/user");
 const categoryRoute=require("./routes/category");
 const productRoute=require("./routes/product");
 const stockRoute=require("./routes/stocks");
+const inventoryRoute=require("./routes/inventory");
 // router function 
 const userM=require("./models/user");
 const User=require("./controller/user");
@@ -46,6 +47,7 @@ app.use("/api",userRoute);
 app.use("/api",categoryRoute);
 app.use("/api",productRoute);
 app.use("/api",stockRoute);
+app.use("/api",inventoryRoute);
 
 app.listen(3000,()=>{
 	console.log(`server is running on port -${port}`);
