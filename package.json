@@ -10,13 +10,14 @@
   "author": "shailendra verma",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "express": "^4.15.2",
-    "bcrypt-nodejs": "0.0.3",
     "jsonwebtoken": "^7.3.0",
     "mongoose": "*",
     "mongoose-paginate": "*",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "querystring": "^0.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"

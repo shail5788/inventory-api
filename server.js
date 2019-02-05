@@ -14,6 +14,7 @@ const categoryRoute=require("./routes/category");
 const productRoute=require("./routes/product");
 const stockRoute=require("./routes/stocks");
 const inventoryRoute=require("./routes/inventory");
+const saleRoute=require("./routes/sale");
 // router function 
 const userM=require("./models/user");
 const User=require("./controller/user");
@@ -32,7 +33,7 @@ mongoose.connect(config.database,connectOptions,(err)=>{
      }
 });
 
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cors.middlewareForCORS);
 
@@ -48,7 +49,7 @@ app.use("/api",categoryRoute);
 app.use("/api",productRoute);
 app.use("/api",stockRoute);
 app.use("/api",inventoryRoute);
-
+app.use("/api",saleRoute);
 app.listen(3000,()=>{
 	console.log(`server is running on port -${port}`);
 });
