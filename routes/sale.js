@@ -11,6 +11,9 @@ router.use(user.authenticate);
 router.route("/sale")
 	  .get(Sale.getAllBill)
 	  .post(Sale.createSale)
+router.route("/sale/bill/:id")
+      .get(Sale.getSingleBill)
+
 
 
 

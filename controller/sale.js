@@ -33,8 +33,35 @@ exports.getAllBill=(req,res)=>{
 	  	 	 res.status(400).json({success:false,message:"Internal server error"})
 	  	 }
 	  	 
-	  	 res.status(200).json({success:true,bills:bills})
+	  	 var option={
+	  	 	path:'itemsBucket.product',
+	  	 	model:"products"
+	  	 }
+         Sale.populate(bills,option,(err,bills)=>{
+	    	 res.status(200).json({success:true,bills:bills})
+	    });	 
+	  	 
 	  })   
+}
+
+exports.getSingleBill=(req,res)=>{
+
+	    const billNo=req.params.id;
+	    console.log(billNo);
+	    Sale.find({billNo:billNo}).populate("createdBy","name email").exec((err,bills)=>{
+	  	 if(err){
+	  	 	 res.status(400).json({success:false,message:"Internal server error"})
+	  	 }
+	  	 
+	  	 var option={
+	  	 	path:'itemsBucket.product',
+	  	 	model:"products"
+	  	 }
+         Sale.populate(bills,option,(err,bills)=>{
+	    	 res.status(200).json({success:true,bills:bills})
+	    });	 
+	  	 
+	  }) 
 }
 
 
