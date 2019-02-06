@@ -18,13 +18,32 @@ exports.getProduct=(req,res)=>{
 exports.createSale=(req,res)=>{
 	 
 	 var bucket=req.body.bill;
-	 var creatBill=new Sale(bucket);
-	 creatBill.save((err,bill)=>{
-	 	 if(err){
-	 	 	res.status(400).json({success:false,message:"Internal server error"});
-	 	 }
-	 	 res.status(200).json({success:true,bill:bill});
-	 });
+	 
+	     Sale.find({billNo:bucket.billNo}).exec((err,bill)=>{
+	  	 if(err){res.status(400).json({success:false,message:"Internal server error"})}
+	     if(bill.length==0){
+	   		  var creatBill=new Sale(bucket);
+			  creatBill.save((err,bill)=>{
+			 	 if(err){
+			 	 	res.status(400).json({success:false,message:"Internal server error"});
+			 	 }
+				 for(var product of bill.itemsBucket){
+			 	 	
+			 	 	Inventory.findOne({productID:product.product}).exec((err,item)=>{
+			 	 		 if(err){res.status(400).json({success:false,message:"Inventory is miss matched"})}
+			 	 	     
+			 	 	     item.remQty=item.remQty-product.qty;
+			 	 	     item.save((err,updatedItem)=>{
+			 	 	     	if(err){res.status(400).json({success:false,message:"error while updating the inventory"})}
+			 	 	     })
+					})
+			 	 }
+			 	 res.status(200).json({success:true,bill:bill});
+			 });
+	     }else{
+	     	res.status(201).json({success:false,message:"Sorry this bill Exists"})
+	     }	 	
+	  })
 }
 exports.getAllBill=(req,res)=>{
 
@@ -32,14 +51,13 @@ exports.getAllBill=(req,res)=>{
 	  	 if(err){
 	  	 	 res.status(400).json({success:false,message:"Internal server error"})
 	  	 }
-	  	 
 	  	 var option={
 	  	 	path:'itemsBucket.product',
 	  	 	model:"products"
 	  	 }
          Sale.populate(bills,option,(err,bills)=>{
 	    	 res.status(200).json({success:true,bills:bills})
-	    });	 
+	     });	 
 	  	 
 	  })   
 }
