@@ -1,7 +1,10 @@
 const mongoose=require("mongoose");
+const moment = require('moment')
 const Inventory=require("../models/inventory");
 const Sale =require("../models/sale");
 const query=require("querystring");
+
+const today = moment().startOf('day')
 
 exports.getProduct=(req,res)=>{
 		const barcode=req.query.barcode;
@@ -18,6 +21,7 @@ exports.getProduct=(req,res)=>{
 exports.createSale=(req,res)=>{
 	 
 	 var bucket=req.body.bill;
+	     bucket.created_at=Date.now();
 	 
 	     Sale.find({billNo:bucket.billNo}).exec((err,bill)=>{
 	  	 if(err){res.status(400).json({success:false,message:"Internal server error"})}
@@ -47,25 +51,26 @@ exports.createSale=(req,res)=>{
 }
 exports.getAllBill=(req,res)=>{
 
-	  Sale.find({}).populate("createdBy","name email").exec((err,bills)=>{
-	  	 if(err){
-	  	 	 res.status(400).json({success:false,message:"Internal server error"})
-	  	 }
-	  	 var option={
-	  	 	path:'itemsBucket.product',
-	  	 	model:"products"
-	  	 }
-         Sale.populate(bills,option,(err,bills)=>{
-	    	 res.status(200).json({success:true,bills:bills})
-	     });	 
-	  	 
-	  })   
+	   const {page,perPage,userid,currentDate,paginated} = req.query;
+	   var query={};
+       (userid)?query['createdBy']=userid:query;
+       (currentDate)?query['created_at']={"$gte":today.toDate(), "$lt":  moment(today).endOf('day').toDate()}:delete query['created_at'];
+       var option ={
+		  page:parseInt(page,10)||1,
+          limit:parseInt(perPage,10)||10,
+          populate:[{path:"createdBy",select:"email , name"},{path:"itemsBucket.product"}],
+       	}
+       	if(!paginated){delete option['limit']};
+       Sale.paginate(query,option,(err,bills)=>{
+          if(err){res.status(400).json({success:false,message:"Internal server error"})}
+          res.status(200).json(bills);
+       })
+
 }
 
 exports.getSingleBill=(req,res)=>{
 
 	    const billNo=req.params.id;
-	    console.log(billNo);
 	    Sale.find({billNo:billNo}).populate("createdBy","name email").exec((err,bills)=>{
 	  	 if(err){
 	  	 	 res.status(400).json({success:false,message:"Internal server error"})

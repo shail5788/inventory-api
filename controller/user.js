@@ -87,7 +87,7 @@ exports.authenticate=(req,res,next)=>{
     var token=req.body.token||req.query.token||req.headers['authorization'];
     if(token){
         jwt.verify(token,config.secret,(err,decoded)=>{
-              if(err){res.status(505).json({message:"token is invalid"})}
+              if(err){res.status(401).json({message:"token is invalid"})}
                else{
                 req.decoded=decoded;
                 next();
