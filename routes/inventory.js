@@ -8,11 +8,9 @@ router.get("/",(req,res)=>{
 })
  
 router.use(user.authenticate);
-
 // Inventory Route
 router.route("/product-inventory")
 	  .get(inventory.getAllProductInventory)
-	  
 router.route("/product-inventory/:id")
 	  .get(inventory.getProductInventrory)
 	  .post((req,res)=>{

@@ -50,6 +50,7 @@ app.use("/api",productRoute);
 app.use("/api",stockRoute);
 app.use("/api",inventoryRoute);
 app.use("/api",saleRoute);
+
 app.listen(3000,()=>{
 	console.log(`server is running on port -${port}`);
 });

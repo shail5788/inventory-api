@@ -107,3 +107,14 @@ exports.getSingleProductStock=(req,res)=>{
 		res.status(200).json({success:true,stock:stock})
 	});   
 }
+exports.updateProduct=(req,res)=>{
+   const stockid=req.params.id;
+   console.log(req.body);
+    Stock.findOneAndUpdate({_id:stockid},req.body,{new:true},(err,stock)=>{
+      if(err){
+        return res.status(400).json({success:false,message:"Internal Server Error"})
+      }
+    res.status(200).json({success:true,message:"stock upated successfully",stock:stock})     
+    }) 
+
+}

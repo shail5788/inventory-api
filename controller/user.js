@@ -11,8 +11,10 @@ exports.signUp=(req,res,next)=>{
         const gender=req.body.gender;
         const username=req.body.username;
         const email=req.body.email;
-        const password=req.body.password;    
-
+        const password=req.body.password;
+        var roles=req.body.role;
+        var newRoles=JSON.parse(roles);             
+        console.log(newRoles);
         if (!firstname || !lastname || !email || !username || !password) {
           return res.status(403).json({ success: false, message: 'Posted data is not correct or incomplete.'});
         }
@@ -33,14 +35,19 @@ exports.signUp=(req,res,next)=>{
         		gender:gender,
         		username:username,
         		email:email,
-        		password:password
+        		password:password,
+            role:{
+              isAdmin:newRoles.isAdmin,
+              isManager:newRoles.isManager,
+              isUser:newRoles.isUser
+             }
         	}); 
-
+           
         	newUser.save((err,user)=>{
         		if(err){
         			res.status(401).json({success:false,message:"internal server error"});
         		}
-				if(user){
+				   if(user){
         			return res.status(200).json({success:true,message:"user created successfully!",user:user})
         		}
 
@@ -58,7 +65,10 @@ exports.login=(req,res)=>{
            else if(user){
              user.comparePassword(req.body.password,(err,isMatch)=>{
                    if(isMatch && !err){
-                     var token=jwt.sign(user,config.secret)
+                    loggedUser=user;
+                    delete loggedUser['password'];
+                    delete loggedUser['last_login'];
+                     var token=jwt.sign(loggedUser,config.secret)
                      user.lastLogin= new Date();
                      user.save((err,user)=>{
                           if(err){res.status(201).json({success:false,message:"Inter server error"})}
@@ -70,6 +80,7 @@ exports.login=(req,res)=>{
                                                name:user.name,
                                                user_id:user._id,
                                                email:user.email,
+                                               role:user.role,
                                                token:token
                                             }
                                      })  
@@ -89,9 +100,10 @@ exports.authenticate=(req,res,next)=>{
         jwt.verify(token,config.secret,(err,decoded)=>{
               if(err){res.status(401).json({message:"token is invalid"})}
                else{
+                //console.log(decoded);
                 req.decoded=decoded;
                 next();
-               } 
+               }  
         })
     }else{
         res.status(506).json({message:"token does not exist in request"});

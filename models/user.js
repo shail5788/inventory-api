@@ -12,7 +12,12 @@ const userSchema=new Schema({
 	  username:{type:String,require:true},
 	  email:{type:String,require:true},
 	  password:{type:String,require:true},
-	  last_login:{type:Date,default:Date.now()}
+	  last_login:{type:Date,default:Date.now()},
+    role:{
+      isAdmin:{type:Boolean,default:true},
+      isManager:{type:Boolean,default:false},
+      isUser:{type:Boolean,default:false}
+     }
 
 });
 
